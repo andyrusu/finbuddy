@@ -1,0 +1,15 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src/common"
+  "src/frontend"
+  "src/renderer"
+  "src/tests"]
+
+ :dependencies
+ [[re-frame "0.11.0"]]
+
+ :builds
+ {:browser {}
+  :browser-release {}
+  :electron {}
+  :electron-release {}}}
