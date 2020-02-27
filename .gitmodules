@@ -1,0 +1,3 @@
+[submodule "docs/design"]
+	path = docs/design
+	url = https://github.com/andyrusu/finbuddy-design.git
