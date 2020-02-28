@@ -9,8 +9,9 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
-  "devDependencies": {},
   "scripts": {
+    "to-browser": "parcel build assets/index.html --out-dir target/browser && shadow-cljs watch browser",
+    "clean-browser": "rd /s /q target\\browser && mkdir target\\browser",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/andyrusu/finbuddy/issues"
   },
-  "homepage": "https://github.com/andyrusu/finbuddy#readme"
+  "homepage": "https://github.com/andyrusu/finbuddy#readme",
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  }
 }
