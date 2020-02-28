@@ -109,3 +109,4 @@ dist
 target/browser/*
 #target/electron/*
 #target/mobile/*
+.shadow-cljs
