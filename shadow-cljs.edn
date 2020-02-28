@@ -1,6 +1,7 @@
 ;; shadow-cljs configuration
 {:source-paths
- ["src/common"
+ ["src/__hooks"
+  "src/common"
   "src/frontend"
   "src/renderer"
   "src/tests"]
@@ -9,7 +10,16 @@
  [[re-frame "0.11.0"]]
 
  :builds
- {:browser {}
-  :browser-release {}
-  :electron {}
-  :electron-release {}}}
+ {:browser {:target :browser
+            :output-dir "target/browser/js"
+            :asset-path "/js"
+            :modules {:main {:entries [finbuddy.main]}}
+            :compiler-options {:optimizations :simple
+                               :warnings-as-errors true}
+            :devtools {:http-root "target/public"
+                       :http-port 8080}
+            :repl-init-ns finbuddy.main
+            :repl-pprint true}
+  :browser-release {:target :browser}
+  :electron {:target :node-script}
+  :electron-release {:target :node-script}}}
