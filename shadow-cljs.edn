@@ -16,7 +16,7 @@
             :modules {:main {:entries [finbuddy.main]}}
             :compiler-options {:optimizations :simple
                                :warnings-as-errors true}
-            :devtools {:http-root "target/public"
+            :devtools {:http-root "target/browser"
                        :http-port 8080}
             :repl-init-ns finbuddy.main
             :repl-pprint true}
