@@ -9,15 +9,18 @@
  :dependencies
  [[re-frame "0.11.0"]]
 
+ :dev-http {8080 "public"}
+ 
  :builds
  {:browser {:target :browser
-            :output-dir "target/browser/js"
+            :output-dir "public/js"
             :asset-path "/js"
-            :modules {:main {:entries [finbuddy.main]}}
+            :modules {:main {:entries [finbuddy.main]
+                             :ini-fn finbuddy.main/init}}
             :compiler-options {:optimizations :simple
                                :warnings-as-errors true}
-            :devtools {:http-root "target/browser"
-                       :http-port 8080}
+            :devtools {:before-load finbuddy.main/stop
+                       :after-load finbuddy.main/start}
             :repl-init-ns finbuddy.main
             :repl-pprint true}
   :browser-release {:target :browser}

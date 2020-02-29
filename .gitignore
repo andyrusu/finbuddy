@@ -106,7 +106,7 @@ dist
 # END OF NODEJS IGNORE
 
 # Project ignore
-target/browser/*
+public/*
 #target/electron/*
 #target/mobile/*
 .shadow-cljs

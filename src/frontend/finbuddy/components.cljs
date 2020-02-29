@@ -1,6 +1,11 @@
 (ns finbuddy.components
   (:require [reagent.core :as r]))
 
+(defn app
+  []
+  [:div
+   [hero]])
+
 (defn hero
   [title subtitle]
   "This is the hero component, acts like a page header."
