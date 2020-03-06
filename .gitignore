@@ -104,6 +104,7 @@ dist
 .tern-port
 
 # END OF NODEJS IGNORE
+.firebase
 
 # Project ignore
 public/js/cljs-runtime
