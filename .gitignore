@@ -106,7 +106,9 @@ dist
 # END OF NODEJS IGNORE
 
 # Project ignore
-public/*
+public/js/cljs-runtime
+public/js/main.js
+public/js/manifest.edn
 #target/electron/*
 #target/mobile/*
 .shadow-cljs
