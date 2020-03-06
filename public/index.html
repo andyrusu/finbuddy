@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/7.10.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="/__/firebase/7.10.0/firebase-analytics.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <section class="hero is-dark">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        FinanceBuddy
+                    </h1>
+                    <h2 class="subtitle">
+                        Your home finance helper!
+                    </h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <button class="button">
+                                <span class="icon">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="level-item">
+                            <button class="button">
+                                <span class="icon">
+                                    <i class="fas fa-angle-left"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="level-item">
+                            <div class="select">
+                                <select>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="12">November</option>
+                                    <option value="13">December</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="level-item">
+                            <div class="select">
+                                <select>
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="level-item">
+                            <button class="button">
+                                <span class="icon">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="level-item">
+                            <button class="button">
+                                <span class="icon">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="level-right">
+                        <div class="level-item">
+                            <button class="button is-primary">
+                                <span class="icon">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                                <span>Add new transaction</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Summary of totals -->
+                <div class="box">
+                    <h2 class="subtitle">This month's report</h2>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="notification has-text-centered is-success">
+                                <h2 class="subtitle">Income:</h2>
+                                <h1 class="title">2500</h1>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="notification has-text-centered is-warning">
+                                <h2 class="subtitle">Expenses:</h2>
+                                <h1 class="title">-2600</h1>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="notification has-text-centered is-danger">
+                                <h2 class="subtitle">Savings:</h2>
+                                <h1 class="title">-100</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Summary-->
+                <!-- Transactions -->
+                <div class="box">
+                    <table class="table is-stripped is-fullwidth">
+                        <thead>
+                            <th>Day</th>
+                            <th>Transaction Name</th>
+                            <th>Amount</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tfoot>
+                            <th>Day</th>
+                            <th>Transaction Name</th>
+                            <th>Amount</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <th>05</th>
+                                <td>Salary</td>
+                                <td>2500</td>
+                                <td></td>
+                                <td>
+                                    <button class="button is-small">
+                                        <span class="icon is-small">
+                                            <i class="far fa-edit"></i>
+                                        </span>
+                                    </button>
+                                    <button class="button is-small is-danger">
+                                        <span class="icon is-small">
+                                            <i class="far fa-trash-alt"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="is-selected">
+                                <th>06</th>
+                                <td>Shopping</td>
+                                <td>-2600</td>
+                                <td></td>
+                                <td>
+                                    <button class="button is-small">
+                                        <span class="icon is-small">
+                                            <i class="far fa-edit"></i>
+                                        </span>
+                                    </button>
+                                    <button class="button is-small is-danger">
+                                        <span class="icon is-small">
+                                            <i class="far fa-trash-alt"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of Transactions -->
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>FinanceBuddy</strong> by Andy Rusu.
+                </p>
+            </div>
+        </footer>
+
+        <!-- Modal for new transaction -->
+        <div class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Add new Transaction</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <form>
+                        <div class="field">
+                            <label class="label">Name</label>
+                            <div class="control">
+                                <input class="input" type="text" name="name" placeholder="e.g. Salary">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Amount</label>
+                            <div class="control">
+                                <input class="input" type="number" name="amount" placeholder="e.g. 100">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="is-expense">
+                                    Is this an expense?
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">When will it occure?</label>
+                            <div class="control">
+                                <input class="input" type="text" name="date" placeholder="e.g. 15/02/2020">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="is-reaccurring">
+                                    Is this reaccurring?
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Notes</label>
+                            <div class="control">
+                                <textarea class="textarea" placeholder="e.g. Yay salary day!"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button">Cancel</button>
+                </footer>
+            </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Confirmation modal -->
+        <div class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">You are deleting transaction {name}.</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Are you sure you wish to delete transaction {name} (from {date} in the amount of {amount})?
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-danger">Yes</button>
+                    <button class="button">No</button>
+                </footer>
+            </div>
+        </div>
+        <!-- End Confirmation modal -->
+    </div>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
