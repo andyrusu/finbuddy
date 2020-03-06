@@ -1,6 +1,6 @@
 (ns finbuddy.main
-  (:require [[reagent.core :as r]
-             [finbuddy.components as cmp]]))
+  (:require [reagent.core :as r]
+            [finbuddy.components :as cmp]))
 
 (defn stop []
   (js/console.log "Stopping..."))
