@@ -16,7 +16,7 @@
             :output-dir "public/js"
             :asset-path "/js"
             :modules {:main {:entries [finbuddy.main]
-                             :ini-fn finbuddy.main/init}}
+                             :init-fn finbuddy.main/init}}
             :compiler-options {:optimizations :simple
                                :warnings-as-errors true}
             :devtools {:before-load finbuddy.main/stop
