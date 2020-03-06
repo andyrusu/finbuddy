@@ -18,17 +18,23 @@
     [:p [:strong name] " by " author "."]]])
 
 (defn modal
-  [title body cancel accept]
-  [:div.modal
-   [:div.modal-background]
-   [:div.modal-card
-    [:header.modal-card-head
-     [:p.modal-card-title title]
-     [:button.delete {:aria-label "close"}]]
-    (if (vector? body)
-      body
-      [:section.modal-card-body body])
-    [:footer.modal-card-foot accept cancel]]])
+  ([body] (modal {} body))
+  ([{:keys [title accept cancel is-active?]
+     :or {title ""
+          accept [:button.button.is-danger "Yes"]
+          cancel [:button.button "No"]
+          is-active? false}} 
+    & body]
+   [:div {:class (str "modal" (when is-active? " is-active"))}
+    [:div.modal-background]
+    [:div.modal-card
+     [:header.modal-card-head
+      [:p.modal-card-title title]
+      [:button.delete {:aria-label "close"}]]
+     (if (vector? body)
+       body
+       [:section.modal-card-body body])
+     [:footer.modal-card-foot accept cancel]]]))
 
 (defn trans-form
   []
@@ -63,7 +69,127 @@
     [:div.control
      [:textarea.textarea {:placeholder "e.g. Yay salary day!"}]]]])
 
+(defn confirm-delete
+  "Modal that asks user to confirm that they want to delete a transaction."
+  ([name date amount] (confirm-delete {} name date amount))
+  ([options name date amount]
+   [modal (merge {:title (str "You are deleting transaction " name ".")} options)
+    "Are you sure you wish to delete transaction" name " (from " date " in the amount of " amount ")?"]))
+
+(defn add-transaction
+  "Modal that shows the form that is used to add transactions."
+  ([] (add-transaction {}))
+  ([options]
+   [modal (merge {:title "Add new Transaction"} options)
+    [trans-form]]))
+
+(defn controls
+  []
+  [:div.level
+   [:div.level-left
+    [:div.level-item
+     [:button.button [:span.icon [:i.fas.fa-angle-double-left]]]]
+    [:div.level-item
+     [:button.button [:span.icon [:i.fas.fa-angle-left]]]]
+    [:div.level-item
+     [:div.select
+      [:select
+       [:option {:value "1"} "January"]
+       [:option {:value "2"} "February"]
+       [:option {:value "3"} "March"]
+       [:option {:value "4"} "April"]
+       [:option {:value "5"} "May"]
+       [:option {:value "6"} "June"]
+       [:option {:value "7"} "July"]
+       [:option {:value "8"} "August"]
+       [:option {:value "9"} "September"]
+       [:option {:value "10"} "October"]
+       [:option {:value "12"} "November"]
+       [:option {:value "13"} "December"]]]]
+    [:div.level-item
+     [:div.select
+      [:select
+       [:option {:value "2020"} "2020"]
+       [:option {:value "2021"} "2021"]]]]
+    [:div.level-item
+     [:button.button [:span.icon [:i.fas.fa-angle-right]]]]
+    [:div.level-item
+     [:button.button [:span.icon [:i.fas.fa-angle-double-right]]]]]
+   [:div.level-right
+    [:div.level-item
+     [:button.button.is-primary
+      [:span.icon [:i.fas.fa-plus]]
+      [:span "Add new transaction"]]]]])
+
+(defn summary
+  []
+  [:div.box
+   [:h2.subtitle "This month's report"]
+   [:div.columns
+    [:div.column
+     [:div.notification.has-text-centered.is-success
+      [:h2.subtitle "Income:"]
+      [:h1.title "2500"]]]
+    [:div.column
+     [:div.notification.has-text-centered.is-warning
+      [:h2.subtitle "Expenses:"]
+      [:h1.title "-2600"]]]
+    [:div.column
+     [:div.notification.has-text-centered.is-danger
+      [:h2.subtitle "Savings:"]
+      [:h1.title "-100"]]]]])
+
+(defn transactions-table
+  []
+  [:div.box
+   [:table.table.is-stripped.is-fullwidth
+    [:thead
+     [:tr
+      [:th "Day"]
+      [:th "Transaction Name"]
+      [:th "Amount"]
+      [:th "Notes"]
+      [:th "Actions"]]]
+    [:tfoot
+     [:tr
+      [:th "Day"]
+      [:th "Transaction Name"]
+      [:th "Amount"]
+      [:th "Notes"]
+      [:th "Actions"]]]
+    [:tbody
+     [:tr
+      [:th "05"]
+      [:td "Salary"]
+      [:td "2500"]
+      [:td]
+      [:td
+       [:button.button.is-small
+        [:span.icon.is-small [:i.far.fa-edit]]]
+       [:button.button.is-small.is-danger
+        [:span.icon.is-small [:i.far.fa-trash-alt]]]]]
+     [:tr.is-selected
+      [:th "06"]
+      [:td "Shopping"]
+      [:td "-2600"]
+      [:td]
+      [:td
+       [:button.button.is-small
+        [:span.icon.is-small [:i.far.fa-edit]]]
+       [:button.button.is-small.is-danger
+        [:span.icon.is-small [:i.far.fa-trash-alt]]]]]]]])
+
+(defn main-body
+  []
+  [:section.section
+   [:div.container
+    [controls]
+    [summary]
+    [transactions-table]]])
+
 (defn app
   []
   [:div
-   [hero]])
+   [hero "FinanceBuddy" "Your home finance helper!"]
+   [main-body]
+   [footer "FinanceBuddy" "Andy Rusu"]])
