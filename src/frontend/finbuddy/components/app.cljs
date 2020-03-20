@@ -1,5 +1,5 @@
-(ns finbuddy.components
-  (:require [reagent.core :as r]))
+(ns finbuddy.components.app
+  (:require [finbuddy.components.auth :as auth]))
 
 (defn hero
   [title subtitle]
@@ -23,7 +23,7 @@
      :or {title ""
           accept [:button.button.is-danger "Yes"]
           cancel [:button.button "No"]
-          is-active? false}} 
+          is-active? false}}
     & body]
    [:div {:class (str "modal" (when is-active? " is-active"))}
     [:div.modal-background]
@@ -139,7 +139,23 @@
       [:h2.subtitle "Savings:"]
       [:h1.title "-100"]]]]])
 
-(defn transactions-table
+(defn transaction
+  ([data] (transaction {} data))
+  ([options {:keys [day name amount notes]
+             :or {amount 0
+                  notes ""}}]
+   [:tr options
+    [:th day]
+    [:td name]
+    [:td amount]
+    [:td notes]
+    [:td
+     [:button.button.is-small
+      [:span.icon.is-small [:i.far.fa-edit]]]
+     [:button.button.is-small.is-danger
+      [:span.icon.is-small [:i.far.fa-trash-alt]]]]]))
+
+(defn transactions
   []
   [:div.box
    [:table.table.is-stripped.is-fullwidth
@@ -158,38 +174,28 @@
       [:th "Notes"]
       [:th "Actions"]]]
     [:tbody
-     [:tr
-      [:th "05"]
-      [:td "Salary"]
-      [:td "2500"]
-      [:td]
-      [:td
-       [:button.button.is-small
-        [:span.icon.is-small [:i.far.fa-edit]]]
-       [:button.button.is-small.is-danger
-        [:span.icon.is-small [:i.far.fa-trash-alt]]]]]
-     [:tr.is-selected
-      [:th "06"]
-      [:td "Shopping"]
-      [:td "-2600"]
-      [:td]
-      [:td
-       [:button.button.is-small
-        [:span.icon.is-small [:i.far.fa-edit]]]
-       [:button.button.is-small.is-danger
-        [:span.icon.is-small [:i.far.fa-trash-alt]]]]]]]])
+     [transaction {:day "05"
+                   :name "Salary"
+                   :amount 2500}]
+     [transaction {:class "is-selected"} {:day "06"
+                                          :name "Shopping"
+                                          :amount -2600}]]]])
 
-(defn main-body
+(defn main
   []
   [:section.section
    [:div.container
     [controls]
     [summary]
-    [transactions-table]]])
+    [transactions]]])
 
 (defn app
-  []
-  [:div
-   [hero "FinanceBuddy" "Your home finance helper!"]
-   [main-body]
-   [footer "FinanceBuddy" "Andy Rusu"]])
+  [page]
+  (case page
+    :app [:div
+          [hero "FinanceBuddy" "Your home finance helper!"]
+          [main]
+          [footer "FinanceBuddy" "Andy Rusu"]]
+    :login [auth/login]
+    :signup [auth/signup]
+    :forgot [auth/forgot]))
