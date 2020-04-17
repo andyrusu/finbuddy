@@ -37,7 +37,7 @@
    [:div.hero-body
     [:div.container
      [:div.columns.is-centered
-      [:div.column.is-5-tablet.is-4-desktop.is-3-widescreen
+      [:div.column.is-5-tablet.is-4-desktop.is-4-widescreen
        page]]]]])
 
 (defn field
@@ -102,6 +102,7 @@
      [:span.icon [:i.fab.fa-microsoft]]
      [:span "Microsoft"]]
     [:div.is-divider {:data-content "OR"}]
+    ;(when )
     [:form#login
      {:action ""}
      [field "Email" "email" "email" :email]
