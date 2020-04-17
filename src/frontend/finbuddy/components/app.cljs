@@ -1,5 +1,14 @@
 (ns finbuddy.components.app
-  (:require [finbuddy.components.auth :as auth]))
+  (:require [reagent.core :as r]
+            [react :as react]
+            [goog.dom :as gd]))
+
+(defn notification
+  [message class]
+  [:div 
+   {:class (str "notification " class)} 
+   [:button {:class "delete"} nil]
+   message])
 
 (defn hero
   [title subtitle]
@@ -182,20 +191,17 @@
                                           :amount -2600}]]]])
 
 (defn main
-  []
-  [:section.section
-   [:div.container
-    [controls]
-    [summary]
-    [transactions]]])
-
-(defn app
-  [page]
-  (case page
-    :app [:div
-          [hero "FinanceBuddy" "Your home finance helper!"]
-          [main]
-          [footer "FinanceBuddy" "Andy Rusu"]]
-    :login [auth/login]
-    :signup [auth/signup]
-    :forgot [auth/forgot]))
+  [title]
+  (react/useEffect 
+   #(gd/setTextContent 
+     (gd/getElementByTagNameAndClass "title") 
+     (.-children title)))
+  (r/as-element
+   [:div
+    [hero "FinanceBuddy" "Your home finance helper!"]
+    [:section.section
+     [:div.container
+      [controls]
+      [summary]
+      [transactions]]]
+    [footer "FinanceBuddy" "Andy Rusu"]]))
