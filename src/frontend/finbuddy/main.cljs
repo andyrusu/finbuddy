@@ -4,7 +4,7 @@
    [reagent.core :as r]
    [finbuddy.components.app :as appc]
    [finbuddy.components.auth :as authc]
-   [finbuddy.auth :as auth]
+   [finbuddy.users :as users]
    [finbuddy.db :as db]))
 
 (defonce fb-app (fb/initializeApp #js {:apiKey "AIzaSyBRVEXRmxn8ubyLjPTK_2f3nAXnT-lVww4"
@@ -35,9 +35,8 @@
 (defn start []
   (js/console.log "Starting...")
   (fb/analytics)
-  (auth/init-auth)
-  ;(auth/logout)
-  (js/console.log (auth/get-current-user))
+  (users/init-auth)
+  (js/console.log (users/get-current-user))
   (r/render [app db/content]
             (.getElementById js/document "app")))
 

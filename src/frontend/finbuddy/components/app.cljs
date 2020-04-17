@@ -2,7 +2,7 @@
   (:require [reagent.core :as r]
             [react :as react]
             [goog.dom :as gd]
-            [finbuddy.auth :refer [logout]]
+            [finbuddy.users :refer [logout]]
             [finbuddy.notification :as notify :refer [delete]]))
 
 (defn notification
