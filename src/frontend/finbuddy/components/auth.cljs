@@ -44,17 +44,16 @@
 (defn field
   [label name type key]
   (let [value (get-in @db/content [:form key :value] nil)
-        error (get-in @db/content [:form key :error] false)]
+        error (get-in @db/content [:form key :error] nil)]
     [:div.field
      [:label.label {:for name} label]
      [:div.control.has-icons-left.has-icons-right
       [:input
        {:required "required"
-        :class (if error
-                 "input is-danger"
-                 (if value
-                   "input is-success"
-                   "input"))
+        :class (cond
+                 (and value error) "input is-danger"
+                 (and value (= false error)) "input is-success"
+                 :else "input")
         :name name
         :placeholder "e.g. bobsmith@gmail.com"
         :type type
