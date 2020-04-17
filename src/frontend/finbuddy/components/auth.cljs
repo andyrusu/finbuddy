@@ -42,7 +42,7 @@
        page]]]]])
 
 (defn field
-  [label name type key]
+  [label name type placeholder key]
   (let [value (get-in @db/content [:form key :value] nil)
         error (get-in @db/content [:form key :error] nil)]
     [:div.field
@@ -55,7 +55,7 @@
                  (and value (= false error)) "input is-success"
                  :else "input")
         :name name
-        :placeholder "e.g. bobsmith@gmail.com"
+        :placeholder placeholder
         :type type
         :value value
         :onChange #(swap!
@@ -107,9 +107,9 @@
         [notification (:id note) (:message note) (:class note)]))
     [:form#login
      {:action ""}
-     [field "Email" "email" "email" :email]
-     [field "Password" "password" "password" :password]
-     [check-field "Remember me" "remeber" :remember]
+     [field "Email" "email" "email" "e.g. bobsmith@gmail.com" :email]
+     [field "Password" "password" "password" "********" :password]
+     [check-field "Remember me" "remember" :remember]
      [:div.field
       [:button.button.is-success
        {:on-click handle-login}
