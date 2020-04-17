@@ -11,6 +11,13 @@
   []
   (fb/auth))
 
+(defn get-persistence
+  [type]
+  (aget fb/auth "Auth" "Persistence" (case type
+                                       :local "LOCAL"
+                                       :session "SESSION"
+                                       "NONE")))
+
 (defn get-current-user
   []
   (.-currentUser (get-auth)))
@@ -23,12 +30,15 @@
                            (db/set-page! :app)
                            (when (= :app (:show-page @db/content)) (db/set-page! :login))))))
 
+(defn error-handler
+  [error]
+  (notify/create (.-message error) :login "is-danger"))
+
 (defn login 
   [email password]
   (-> (get-auth)
       (.signInWithEmailAndPassword email password)
-      (.catch (fn [error]
-                (notify/create (.-message error) :login "is-danger")))))
+      (.catch error-handler)))
 
 (defn handle-login
   [event]
@@ -48,7 +58,13 @@
                          :error (get errors :password)}
               :remember {:value remember
                          :error nil}})
-      (login email password))))
+      (-> (get-auth)
+          (.setPersistence 
+           (if remember 
+             (get-persistence :local) 
+             (get-persistence :session)))
+          (.then (fn [] (login email password)))
+          (.catch error-handler)))))
 
 (defn logout []
   (.signOut (get-auth)))
