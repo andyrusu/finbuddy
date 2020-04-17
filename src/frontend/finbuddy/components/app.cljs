@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [react :as react]
             [goog.dom :as gd]
+            [finbuddy.auth :refer [logout]]
             [finbuddy.notification :as notify :refer [delete]]))
 
 (defn notification
@@ -17,6 +18,14 @@
   [title subtitle]
   "This is the hero component, acts like a page header."
   [:section.hero.is-dark
+   [:div.hero-head
+    [:nav.navbar
+     [:div.navbar-menu
+      [:div.navbar-end
+       [:a.navbar-item
+        {:href "#"
+         :on-click #(do (.preventDefault %) (logout))}
+        "Logout"]]]]]
    [:div.hero-body
     [:div.container
      [:h1.title title]

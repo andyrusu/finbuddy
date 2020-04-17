@@ -14,6 +14,10 @@
   [data]
   (swap! content #(assoc % :form data)))
 
+(defn clear-form!
+  []
+  (swap! content #(assoc % :form nil)))
+
 (defn set-notifications!
   [notifications]
   (swap! content #(assoc % :notifications notifications)))

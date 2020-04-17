@@ -3,7 +3,7 @@
    [goog.dom.dataset :as gdata]
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
-   [finbuddy.auth :refer [handle-login]]
+   [finbuddy.auth :refer [login-handler forgot-handler]]
    [finbuddy.components.app :refer [notification]]
    [finbuddy.notification :as notify :refer [get-by-type]]))
 
@@ -49,7 +49,8 @@
      [:label.label {:for name} label]
      [:div.control.has-icons-left.has-icons-right
       [:input
-       {:required "required"
+       {:id name
+        :required "required"
         :class (cond
                  (and value error) "input is-danger"
                  (and value (= false error)) "input is-success"
@@ -58,15 +59,15 @@
         :placeholder placeholder
         :type type
         :value value
-        :onChange #(swap!
-                    db/content
-                    assoc-in
-                    [:form key :value]
-                    (gform/getValue (.-currentTarget %)))}]
+        :on-change #(swap!
+                     db/content
+                     assoc-in
+                     [:form key :value]
+                     (gform/getValue (.-currentTarget %)))}]
       [:span.icon.is-small.is-left [:i.fa.fa-envelope]]
       (if error
         [:span.icon.is-small.is-right [:i.fa.fa-exclamation-triangle]]
-        (when value [:span.icon.is-small.is-right [:i.fa.fa-check]]))
+        (when (and value (= false error)) [:span.icon.is-small.is-right [:i.fa.fa-check]]))
       (when error [:p.help.is-danger error])]]))
 
 (defn check-field
@@ -77,7 +78,7 @@
     [:input {:type "checkbox"
              :name name
              :checked (get-in @db/content [:form key :value] false)
-             :onChange #(swap!
+             :on-change #(swap!
                          db/content
                          assoc-in
                          [:form key :value]
@@ -112,7 +113,7 @@
      [check-field "Remember me" "remember" :remember]
      [:div.field
       [:button.button.is-success
-       {:on-click handle-login}
+       {:on-click login-handler}
        "Login"]]]
     [:div.is-divider {:data-content "OR"}]
     [signup-link]
@@ -178,19 +179,15 @@
    [:div.box
     [:h1.title.has-text-dark.has-text-centered "Forgot password"]
     [:hr]
+    (when-not (empty? (notify/get-by-type :forgot))
+      (let [note (last (:notifications @db/content))]
+        [notification (:id note) (:message note) (:class note)]))
     [:form
      {:action ""}
-     [:div.field
-      [:label.label {:for "email"} "Email"]
-      [:div.control.has-icons-left
-       [:input.input
-        {:required "required"
-         :name "email"
-         :placeholder "e.g. bobsmith@gmail.com"
-         :type "email"}]
-       [:span.icon.is-small.is-left [:i.fa.fa-envelope]]]]
+     [field "Email" "email" "email" "e.g. bobsmith@gmail.com" :email]
      [:div.field
       [:button.button.is-success
+       {:on-click forgot-handler}
        "Send Email"]]]
     [:hr]
     [signup-link]
