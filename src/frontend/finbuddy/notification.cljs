@@ -4,14 +4,16 @@
    [nano-id.core :refer [nano-id]]))
 
 (defn create
-  ([message] (create (nano-id) message "is-primary"))
-  ([message class] (create (nano-id) message class))
-  ([id message class]
+  ([message] (create message :app "is-primary" (nano-id)))
+  ([message type] (create message type "is-primary" (nano-id)))
+  ([message type class] (create message type class (nano-id)))
+  ([message type class id]
    (let [notifications (:notifications @db/content)]
      (db/set-notifications!
       (conj notifications {:id id
                            :message message
-                           :class class})))))
+                           :class class
+                           :type type})))))
 
 (defn delete
   [id]
@@ -19,11 +21,13 @@
     (db/set-notifications!
      (remove #(= (:id %) id) notifications))))
 
-;; (defn get
-;;   [id]
-;;   (let [notifications (:notifications @db/content)]
-;;     (clojure.core/first
-;;      (remove #(not (= (:id %) id)) notifications))))
+(defn get-by-type
+  [type]
+  (filter #(= (:type %) type) (:notifications @db/content)))
+
+(defn get-by-id
+  [id]
+  (first (filter #(= (:id %) id) (:notifications @db/content))))
 
 ;; (defn first
 ;;   []

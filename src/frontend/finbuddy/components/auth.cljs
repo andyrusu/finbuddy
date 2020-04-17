@@ -4,7 +4,8 @@
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
    [finbuddy.auth :refer [handle-login]]
-   [finbuddy.components.app :refer [notification]]))
+   [finbuddy.components.app :refer [notification]]
+   [finbuddy.notification :as notify :refer [get-by-type]]))
 
 (defn handle-link
   [event]
@@ -102,7 +103,7 @@
      [:span.icon [:i.fab.fa-microsoft]]
      [:span "Microsoft"]]
     [:div.is-divider {:data-content "OR"}]
-    (when-not (empty? (:notifications @db/content)) 
+    (when-not (empty? (notify/get-by-type :login)) 
       (let [note (last (:notifications @db/content))]
         [notification (:id note) (:message note) (:class note)]))
     [:form#login

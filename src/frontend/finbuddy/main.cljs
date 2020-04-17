@@ -16,6 +16,11 @@
                                        :appId "1:307661346910:web:77a489fab2642b0509bccf"
                                        :measurementId "G-CTGVJ5X1SB"}))
 
+(add-watch db/content :log (fn [_key _atom old-state new-state]
+                             (js/console.log 
+                              (clj->js old-state) 
+                              (clj->js new-state))))
+
 (defn stop []
   (js/console.log "Stopping..."))
 
@@ -31,11 +36,10 @@
   (js/console.log "Starting...")
   (fb/analytics)
   (auth/init-auth)
-  ;(js/console.log @db/content)
   ;(auth/logout)
   (js/console.log (auth/get-current-user))
   (r/render [app db/content]
             (.getElementById js/document "app")))
- 
+
 (defn ^:export init []
   (start))

@@ -28,7 +28,7 @@
   (-> (get-auth)
       (.signInWithEmailAndPassword email password)
       (.catch (fn [error]
-                (notify/create (.-message error) "is-danger")))))
+                (notify/create (.-message error) :login "is-danger")))))
 
 (defn handle-login
   [event]
