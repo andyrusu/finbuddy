@@ -1,14 +1,17 @@
 (ns finbuddy.components.app
   (:require [reagent.core :as r]
             [react :as react]
-            [goog.dom :as gd]))
+            [goog.dom :as gd]
+            [finbuddy.notification :as notify :refer [delete]]))
 
 (defn notification
-  [message class]
-  [:div 
-   {:class (str "notification " class)} 
-   [:button {:class "delete"} nil]
-   message])
+  ([id message] (notification id message "is-primary"))
+  ([id message class]
+   [:div
+    {:key id
+     :class (str "notification " class)}
+    [:button {:class "delete" :on-click #(notify/delete id)} nil]
+    message]))
 
 (defn hero
   [title subtitle]

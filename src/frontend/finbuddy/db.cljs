@@ -13,3 +13,7 @@
 (defn set-form!
   [data]
   (swap! content #(assoc % :form data)))
+
+(defn set-notifications!
+  [notifications]
+  (swap! content #(assoc % :notifications notifications)))

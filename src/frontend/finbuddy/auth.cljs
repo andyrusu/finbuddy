@@ -4,7 +4,8 @@
    [goog.dom.forms :as gform]
    [firebase :as fb]
    [finbuddy.db :as db]
-   [finbuddy.validation :as val]))
+   [finbuddy.validation :as val]
+   [finbuddy.notification :as notify :refer [create]]))
 
 (defn get-auth
   []
@@ -27,7 +28,7 @@
   (-> (get-auth)
       (.signInWithEmailAndPassword email password)
       (.catch (fn [error]
-                (js/console.log error)))))
+                (notify/create (.-message error) "is-danger")))))
 
 (defn handle-login
   [event]
