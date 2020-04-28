@@ -21,3 +21,12 @@
 (defn set-notifications!
   [notifications]
   (swap! content #(assoc % :notifications notifications)))
+
+(defn get-form-field
+  ([field] (get-form-field field nil))
+  ([field default]
+   (get-in @content [:form field] default)))
+
+(defn update-form-field!
+  [field value]
+  (swap! content assoc-in [:form field :value] value))

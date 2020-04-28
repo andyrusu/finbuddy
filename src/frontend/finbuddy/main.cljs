@@ -4,6 +4,7 @@
    [reagent.core :as r]
    [finbuddy.components.app :as appc]
    [finbuddy.components.auth :as authc]
+   [finbuddy.pages.login :as login]
    [finbuddy.users :as users]
    [finbuddy.db :as db]))
 
@@ -28,7 +29,7 @@
   [content]
   (case (:show-page @content)
     :app [:> appc/main]
-    :login [authc/login]
+    :login [login/show]
     :signup [authc/signup]
     :forgot [authc/forgot]))
 

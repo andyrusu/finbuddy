@@ -15,6 +15,36 @@
                            :class class
                            :type type})))))
 
+(defn as-primary
+  ([message] (as-primary message :app))
+  ([message type] (create message type "is-primary"))
+  ([message type is-light] (create message type "is-primary is-light")))
+
+(defn as-link
+  ([message] (as-link message :app))
+  ([message type] (create message type "is-link"))
+  ([message type is-light] (create message type "is-link is-light")))
+
+(defn as-info
+  ([message] (as-info message :app))
+  ([message type] (create message type "is-info"))
+  ([message type is-light] (create message type "is-info is-light")))
+
+(defn as-success
+  ([message] (as-success message :app))
+  ([message type] (create message type "is-success"))
+  ([message type is-light] (create message type "is-success is-light")))
+
+(defn as-warning
+  ([message] (as-warning message :app))
+  ([message type] (create message type "is-warning"))
+  ([message type is-light] (create message type "is-warning is-light")))
+
+(defn as-danger
+  ([message] (as-danger message :app))
+  ([message type] (create message type "is-danger"))
+  ([message type is-light] (create message type "is-danger is-light")))
+
 (defn delete
   [id]
   (let [notifications (:notifications @db/content)]
@@ -28,15 +58,3 @@
 (defn get-by-id
   [id]
   (first (filter #(= (:id %) id) (:notifications @db/content))))
-
-;; (defn first
-;;   []
-;;   (clojure.core/first (:notifications @db/content)))
-
-;; (defn last
-;;   []
-;;   (clojure.core/last (:notifications @db/content)))
-
-;; (defn empty?
-;;   []
-;;   (clojure.core/empty (:notifications @db/content)))
