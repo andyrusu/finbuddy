@@ -2,6 +2,7 @@
   (:require
    [firebase :as fb]
    [finbuddy.db :as db]
+   [finbuddy.router :refer [router current-top-name goto]]
    [finbuddy.notification :as notify :refer [as-danger]]))
 
 (defn get-auth
@@ -23,9 +24,14 @@
   []
   (.onAuthStateChanged (get-auth)
                        (fn [user]
-                         (if (not (= user nil))
-                           (db/set-page! :app)
-                           (when (= :app (:show-page @db/content)) (db/set-page! :login))))))
+                         (let [route-name (current-top-name)
+                               user? (not (= nil user))
+                               auth-route? (.indexOf [:app :profile] route-name)
+                               guest-route? (.indexOf [:login :signup :forgot] route-name)]
+                           (cond
+                             (and auth-route? (not user?)) (goto :login)
+                             (and guest-route? user?) (goto :app)
+                             :else (goto :signup))))))
 
 (defn login
   [email password]
@@ -38,7 +44,7 @@
   (-> (get-auth)
       (.sendPasswordResetEmail email)
       (.then (fn []
-               (notify/create "Email has been sent." :forgot "is-success")))
+               (notify/as-success "Email has been sent." :forgot)))
       (.catch #(notify/as-danger (.-message %) :forgot))))
 
 (defn logout []

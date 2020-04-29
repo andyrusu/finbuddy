@@ -2,6 +2,7 @@
   (:require 
    [firebase :as fb]
    [reagent.core :as r]
+   [finbuddy.pages.login :as login :refer [show]]
    [finbuddy.components.app :as appc]
    [finbuddy.components.auth :as authc]
    [finbuddy.router :as router :refer [router top-name-from-route]]
@@ -32,7 +33,7 @@
     (r/as-element 
      (case (top-name-from-route route)
        :app [:> appc/main]
-       :login [authc/login]
+       :login [login/show]
        :signup [authc/signup]
        :forgot [authc/forgot]))))
 

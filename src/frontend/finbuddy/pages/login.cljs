@@ -4,6 +4,7 @@
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
    [finbuddy.users :as users]
+   [finbuddy.router :refer [router]]
    [finbuddy.notification :as notify :refer [as-danger get-by-type]]
    [finbuddy.components.form :refer [input-field check-field]]
    [finbuddy.components.app :refer [notification]]
@@ -26,7 +27,6 @@
                      :remember {:value remember
                                 :error nil}})
       (do
-        (db/clear-form!)
         (-> (users/get-auth)
             (.setPersistence
              (if remember

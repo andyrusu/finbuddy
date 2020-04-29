@@ -1,35 +1,26 @@
 (ns finbuddy.router
   (:require [finbuddy.db :as db]
-            [finbuddy.users :refer [get-current-user]]
+            ;[finbuddy.users :refer [get-current-user]]
             [router5 :as r5]
             [router5-plugin-logger :as r5-logger]
             [router5-plugin-browser :as r5-browser]))
 
-(defn auth-gate
-  [router]
-  (fn [to-state from-state done]
-    (done (when (= nil (get-current-user)) (clj->js {:redirect {:name :login}})))))
+;; (defn auth-gate
+;;   [router]
+;;   (fn [to-state from-state done]
+;;     (done (when (= nil (get-current-user)) (clj->js {:redirect {:name :login}})))))
 
-(defn guest-gate
-  [router]
-  (fn [to-state from-state done]
-    (done (when (get-current-user) (clj->js {:why "User already logged in"})))))
+;; (defn guest-gate
+;;   [router]
+;;   (fn [to-state from-state done]
+;;     (js/console.log "gate: " (get-current-user))
+;;     (done (when (get-current-user) (clj->js {:why "User already logged in"})))))
 
-(def routes [{:name :login 
-              :path "/login" 
-              :canActivate guest-gate}
-             {:name :signup 
-              :path "/signup" 
-              :canActivate guest-gate}
-             {:name :forgot 
-              :path "/forgot" 
-              :canActivate guest-gate}
-             {:name :profile 
-              :path "/profile" 
-              :canActivate auth-gate}
-             {:name :app 
-              :path "/" 
-              :canActivate auth-gate}])
+(def routes [{:name :login :path "/login"}
+             {:name :signup :path "/signup"}
+             {:name :forgot :path "/forgot"}
+             {:name :profile :path "/profile"}
+             {:name :app :path "/"}])
 
 (defn top-name-from-route
   [route]
@@ -52,3 +43,29 @@
     router))
 
 (def router (create routes))
+
+(defn current-state
+  []
+  (.getState router))
+
+(defn current-route-name
+  []
+  (keyword (.-name (current-state))))
+
+(defn current-top-name
+  []
+  (top-name-from-route (current-state)))
+
+(defn goto
+  ([route]
+   (goto route #js {} #js {} nil))
+  ([route params]
+   (goto route #js {} #js {} nil))
+  ([route params options]
+   (goto route params options nil))
+  ([route params options done]
+   (.navigate router
+              (name route)
+              (clj->js params)
+              (clj->js options)
+              done)))
