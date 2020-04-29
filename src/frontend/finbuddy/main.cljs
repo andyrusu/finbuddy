@@ -5,7 +5,7 @@
    [finbuddy.pages.login :as login :refer [show]]
    [finbuddy.components.app :as appc]
    [finbuddy.components.auth :as authc]
-   [finbuddy.router :as router :refer [router top-name-from-route]]
+   [finbuddy.router :as router :refer [router init-auth-observer top-name-from-route]]
    [react-router5 :as rr5]
    [finbuddy.users :as users]
    [finbuddy.db :as db]))
@@ -40,8 +40,8 @@
 (defn start []
   (js/console.log "Starting app...")
   (fb/analytics)
-  (users/init-auth)
   (js/console.log (users/get-current-user))
+  (router/init-auth-observer)
   (.start router #(r/render [:> rr5/RouterProvider
                              {:router router}
                              [:> app]]

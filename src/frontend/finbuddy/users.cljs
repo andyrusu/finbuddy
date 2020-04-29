@@ -2,7 +2,6 @@
   (:require
    [firebase :as fb]
    [finbuddy.db :as db]
-   [finbuddy.router :refer [router current-top-name goto]]
    [finbuddy.notification :as notify :refer [as-danger]]))
 
 (defn get-auth
@@ -20,18 +19,9 @@
   []
   (.-currentUser (get-auth)))
 
-(defn init-auth
-  []
-  (.onAuthStateChanged (get-auth)
-                       (fn [user]
-                         (let [route-name (current-top-name)
-                               user? (not (= nil user))
-                               auth-route? (.indexOf [:app :profile] route-name)
-                               guest-route? (.indexOf [:login :signup :forgot] route-name)]
-                           (cond
-                             (and auth-route? (not user?)) (goto :login)
-                             (and guest-route? user?) (goto :app)
-                             :else (goto :signup))))))
+(defn observe-state-changed
+  [observer]
+  (.onAuthStateChanged (get-auth) observer))
 
 (defn login
   [email password]

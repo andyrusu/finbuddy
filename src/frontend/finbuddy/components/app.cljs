@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [react :as react]
             [goog.dom :as gd]
+            [react-router5 :refer [Link]]
             [finbuddy.users :refer [logout]]
             [finbuddy.notification :as notify :refer [delete]]))
 
@@ -13,6 +14,10 @@
      :class (str "notification " class)}
     [:button {:class "delete" :on-click #(notify/delete id)} nil]
     message]))
+
+(defn link
+  [options label]
+  [:> Link options label])
 
 (defn hero
   [title subtitle]

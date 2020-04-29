@@ -4,33 +4,20 @@
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
    [finbuddy.auth :refer [forgot-handler]]
-   [finbuddy.components.app :refer [notification]]
+   [finbuddy.components.app :refer [link notification]]
    [finbuddy.notification :as notify :refer [get-by-type]]))
-
-(defn handle-link
-  [event]
-  (.preventDefault event)
-  (-> event
-      (.-currentTarget)
-      (gdata/get "page")
-      (keyword)
-      (db/set-page!)))
 
 (defn login-link
   []
-  [:a {:href "#" :on-click handle-link :data-page :login} "Login"])
+  [link {:routeName :login} "Login"])
 
 (defn signup-link
   []
-  [:a {:href "#" :on-click handle-link :data-page :signup} "Signup"])
+  [link {:routeName :signup} "Signup"])
 
 (defn forgot-link
   []
-  [:a {:href "#" :on-click handle-link :data-page :forgot} "Forgot password"])
-
-(defn logout-link
-  []
-  [])
+  [link {:routeName :forgot} "Forgot password"])
 
 (defn layout
   [page]
@@ -84,41 +71,6 @@
                          [:form key :value]
                          (not (boolean (get-in @db/content [:form key :value]))))}]
     label]])
-
-;; (defn login
-;;   []
-;;   [layout 
-;;    [:div.box
-;;     [:h1.title.has-text-dark.has-text-centered "Login"]
-;;     [:div.is-divider]
-;;     [:a.button.is-fullwidth.is-google
-;;      [:span.icon [:i.fab.fa-google]]
-;;      [:span "Google"]]
-;;     [:br]
-;;     [:a.button.is-fullwidth.is-facebook
-;;      [:span.icon [:i.fab.fa-facebook]]
-;;      [:span "Facebook"]]
-;;     [:br]
-;;     [:a.button.is-fullwidth.is-microsoft
-;;      [:span.icon [:i.fab.fa-microsoft]]
-;;      [:span "Microsoft"]]
-;;     [:div.is-divider {:data-content "OR"}]
-;;     (when-not (empty? (notify/get-by-type :login)) 
-;;       (let [note (last (:notifications @db/content))]
-;;         [notification (:id note) (:message note) (:class note)]))
-;;     [:form#login
-;;      {:action ""}
-;;      [field "Email" "email" "email" "e.g. bobsmith@gmail.com" :email]
-;;      [field "Password" "password" "password" "********" :password]
-;;      [check-field "Remember me" "remember" :remember]
-;;      [:div.field
-;;       [:button.button.is-success
-;;        {:on-click #(js/console.log "Connect login handler!!!!")}
-;;        "Login"]]]
-;;     [:div.is-divider {:data-content "OR"}]
-;;     [signup-link]
-;;     " | "
-;;     [forgot-link]]])
 
 (defn signup
   []
