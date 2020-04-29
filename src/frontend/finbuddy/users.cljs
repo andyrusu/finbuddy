@@ -2,7 +2,7 @@
   (:require
    [firebase :as fb]
    [finbuddy.db :as db]
-   [finbuddy.notification :as notify :refer [create]]))
+   [finbuddy.notification :as notify :refer [as-danger]]))
 
 (defn get-auth
   []
@@ -27,15 +27,11 @@
                            (db/set-page! :app)
                            (when (= :app (:show-page @db/content)) (db/set-page! :login))))))
 
-(defn error-handler
-  [error type]
-  (notify/create (.-message error) type "is-danger"))
-
 (defn login
   [email password]
   (-> (get-auth)
       (.signInWithEmailAndPassword email password)
-      (.catch #(error-handler % :login))))
+      (.catch #(notify/as-danger (.-message %) :login))))
 
 (defn forgot
   [email]
@@ -43,7 +39,7 @@
       (.sendPasswordResetEmail email)
       (.then (fn []
                (notify/create "Email has been sent." :forgot "is-success")))
-      (.catch #(error-handler % :forgot))))
+      (.catch #(notify/as-danger (.-message %) :forgot))))
 
 (defn logout []
   (.signOut (get-auth)))

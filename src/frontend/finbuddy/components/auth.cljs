@@ -3,7 +3,7 @@
    [goog.dom.dataset :as gdata]
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
-   [finbuddy.auth :refer [login-handler forgot-handler]]
+   [finbuddy.auth :refer [forgot-handler]]
    [finbuddy.components.app :refer [notification]]
    [finbuddy.notification :as notify :refer [get-by-type]]))
 
@@ -113,7 +113,7 @@
      [check-field "Remember me" "remember" :remember]
      [:div.field
       [:button.button.is-success
-       {:on-click login-handler}
+       {:on-click #(js/console.log "Connect login handler!!!!")}
        "Login"]]]
     [:div.is-divider {:data-content "OR"}]
     [signup-link]
