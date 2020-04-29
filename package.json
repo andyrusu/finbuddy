@@ -14,11 +14,12 @@
     "react-dom": "^16.13.0",
     "react-router5": "^8.0.1",
     "router5": "^8.0.1",
+    "router5-plugin-browser": "^8.0.1",
     "router5-plugin-logger": "^8.0.1",
     "validator": "^13.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "shadow-cljs server"
   },
   "repository": {
     "type": "git",

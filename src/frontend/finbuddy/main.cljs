@@ -4,7 +4,7 @@
    [reagent.core :as r]
    [finbuddy.components.app :as appc]
    [finbuddy.components.auth :as authc]
-   [finbuddy.router :as router :refer [create top-route-name-from-route]]
+   [finbuddy.router :as router :refer [router top-name-from-route]]
    [react-router5 :as rr5]
    [finbuddy.users :as users]
    [finbuddy.db :as db]))
@@ -18,12 +18,6 @@
                                        :appId "1:307661346910:web:77a489fab2642b0509bccf"
                                        :measurementId "G-CTGVJ5X1SB"}))
 
-(def routes [{:name :login :path "/login"}
-             {:name :signup :path "/signup"}
-             {:name :forgot :path "/forgot"}
-             {:name :profile :path "/profile"}
-             {:name :app :path "/"}])
-
 (add-watch db/content :log (fn [_key _atom old-state new-state]
                              (js/console.log 
                               (clj->js old-state) 
@@ -36,22 +30,21 @@
   []
   (let [route (.-route (rr5/useRouteNode ""))]
     (r/as-element 
-     (case (top-route-name-from-route route)
+     (case (top-name-from-route route)
        :app [:> appc/main]
        :login [authc/login]
        :signup [authc/signup]
        :forgot [authc/forgot]))))
 
 (defn start []
-  (let [router (router/create routes)]
-    (js/console.log "Starting app...")
-    (fb/analytics)
-    (users/init-auth)
-    (js/console.log (users/get-current-user))
-    (.start router #(r/render [:> rr5/RouterProvider
-                               {:router router}
-                               [:> app]]
-                              (.getElementById js/document "app")))))
+  (js/console.log "Starting app...")
+  (fb/analytics)
+  (users/init-auth)
+  (js/console.log (users/get-current-user))
+  (.start router #(r/render [:> rr5/RouterProvider
+                             {:router router}
+                             [:> app]]
+                            (.getElementById js/document "app"))))
 
 (defn ^:export init []
   (start))

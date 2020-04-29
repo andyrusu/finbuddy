@@ -2,8 +2,7 @@
   (:require
    [reagent.core :as r]))
 
-(def content (r/atom {:show-page :app
-                      :form nil
+(def content (r/atom {:form nil
                       :notifications []}))
 
 (defn set-page!
