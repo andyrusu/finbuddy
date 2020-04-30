@@ -4,7 +4,7 @@
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
    [finbuddy.users :as users]
-   [finbuddy.validation :as val :refer [login-form forgot-form]]))
+   [finbuddy.validation :as val :refer [forgot-form]]))
 
 
 (defn forgot-handler

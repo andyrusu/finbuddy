@@ -2,23 +2,33 @@
   (:require
    [goog.dom :as gdom]
    [goog.dom.forms :as gform]
+   [validator :as v]
    [finbuddy.db :as db]
    [finbuddy.users :as users]
-   [finbuddy.router :refer [router]]
-   [finbuddy.notification :as notify :refer [as-danger get-by-type]]
+   [finbuddy.notification :as notify]
    [finbuddy.components.form :refer [input-field check-field]]
    [finbuddy.components.app :refer [notification]]
    [finbuddy.components.auth :refer [signup-link forgot-link]]
-   [finbuddy.validation :as val :refer [login-form forgot-form]]
    [finbuddy.components.layouts :refer [simple]]))
 
-(defn show-errors
-  [email password remember]
-  )
+(defn validate
+  [email password]
+  (let [email-msg (if (v/isEmpty email)
+                    "Please write your email address."
+                    (if (not (v/isEmail email))
+                      "Please write a valid email address."
+                      false))
+        psw-msg (if (v/isEmpty password)
+                  "Please write your password."
+                  false)]
+    (if (or email-msg psw-msg)
+      {:email email-msg
+       :password psw-msg}
+      false)))
 
 (defn do-login
   [email password remember]
-  (let [errors (val/login-form email password)]
+  (let [errors (validate email password)]
     (if errors
       (db/set-form! {:email {:value email
                              :error (:email errors)}
