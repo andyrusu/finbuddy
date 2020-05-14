@@ -36,14 +36,13 @@
                                 :error (:password errors)}
                      :remember {:value remember
                                 :error nil}})
-      (do
-        (-> (users/get-auth)
-            (.setPersistence
-             (if remember
-               (users/get-persistence :local)
-               (users/get-persistence :session)))
-            (.then (fn [] (users/login email password)))
-            (.catch #(notify/as-danger (.-message %) :login)))))))
+      (-> (users/get-auth)
+          (.setPersistence
+           (if remember
+             (users/get-persistence :local)
+             (users/get-persistence :session)))
+          (.then #(users/login email password))
+          (.catch #(notify/add! (notify/as-danger (.-message %) :login)))))))
 
 (defn submit-handler
   [event]
@@ -72,12 +71,16 @@
      [:span.icon [:i.fab.fa-microsoft]]
      [:span "Microsoft"]]
     [:div.is-divider {:data-content "OR"}]
-    (when-not (empty? (notify/get-by-type :login))
-      (let [note (last (:notifications @db/content))]
-        [notification (:id note) (:message note) (:class note)]))
+    (when-not (empty? @notify/notifications)
+      (let [note (->> @notify/notifications
+                      (notify/get-by-source :login)
+                      (last)
+                      (notify/mark-flash!))]
+        (js/console.log note)
+        [notification (:id note) (:message note) (:severity note)]))
     [:form#login
      {:action "#"}
-     (let [{value :value 
+     (let [{value :value
             error :error} (db/get-form-field :email)]
        [input-field {:label "Email"
                      :value value
@@ -93,7 +96,7 @@
                                      :type "email"
                                      :value value
                                      :on-change #(db/update-form-field! :email (gform/getValue (.-currentTarget %)))}}])
-     (let [{value :value 
+     (let [{value :value
             error :error} (db/get-form-field :password)]
        [input-field {:label "Password"
                      :value value

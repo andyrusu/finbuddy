@@ -2,7 +2,7 @@
   (:require
    [firebase :as fb]
    [finbuddy.db :as db]
-   [finbuddy.notification :as notify :refer [as-danger]]))
+   [finbuddy.notification :as notify :refer [add! as-danger]]))
 
 (defn get-auth
   []
@@ -27,15 +27,14 @@
   [email password]
   (-> (get-auth)
       (.signInWithEmailAndPassword email password)
-      (.catch #(notify/as-danger (.-message %) :login))))
+      (.catch #(notify/add! (notify/as-danger (.-message %) :login)))))
 
 (defn forgot
   [email]
   (-> (get-auth)
       (.sendPasswordResetEmail email)
-      (.then (fn []
-               (notify/as-success "Email has been sent." :forgot)))
-      (.catch #(notify/as-danger (.-message %) :forgot))))
+      (.then #(notify/add! (notify/as-success "Email has been sent." :forgot)))
+      (.catch #(notify/add! (notify/as-danger (.-message %) :forgot)))))
 
 (defn logout []
   (.signOut (get-auth)))

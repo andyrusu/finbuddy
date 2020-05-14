@@ -1,6 +1,19 @@
 (ns finbuddy.db
   (:require
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [cljs.reader :refer [read-string]])
+  (:import goog.storage.mechanism.HTML5SessionStorage))
+
+;; (defn save-to-session
+;;   [notifications]
+;;   (let [store (HTML5SessionStorage.)]
+;;     (.set store "notifications" (pr-str notifications))
+;;     notifications))
+
+;; (defn load-from-session
+;;   []
+;;   (let [store (HTML5SessionStorage.)]
+;;     (read-string (.get store "notifications"))))
 
 (def content (r/atom {:form nil
                       :notifications []}))
@@ -16,10 +29,6 @@
 (defn clear-form!
   []
   (swap! content #(assoc % :form nil)))
-
-(defn set-notifications!
-  [notifications]
-  (swap! content #(assoc % :notifications notifications)))
 
 (defn get-form-field
   ([field] (get-form-field field nil))
