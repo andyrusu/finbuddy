@@ -2,18 +2,16 @@
   (:require [finbuddy.db :as db]
             [finbuddy.users :as users :refer [get-current-user]]
             [router5 :as r5]
-            [router5-plugin-logger :as r5-logger]
             [router5-plugin-browser :as r5-browser]))
 
 (defn auth-gate
-  [router]
-  (fn [to-state from-state done]
+  [_router]
+  (fn [_to-state _from-state done]
     (done (when (= nil (get-current-user)) (clj->js {:redirect {:name :login}})))))
 
 (defn guest-gate
-  [router]
-  (fn [to-state from-state done]
-    (js/console.log "gate: " (get-current-user))
+  [_router]
+  (fn [_to-state _from-state done]
     (done (when (get-current-user) (clj->js {:why "User already logged in"})))))
 
 (def routes [{:name :login :path "/login"}
@@ -40,7 +38,6 @@
 (defn create
   [routes]
   (let [router (r5/createRouter (clj->js routes) #js {:defaultRoute :app})]
-    (.usePlugin router r5-logger)
     (.usePlugin router (r5-browser))
     (.useMiddleware router clear-form-middleware)
     router))
