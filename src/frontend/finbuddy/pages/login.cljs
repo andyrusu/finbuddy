@@ -1,6 +1,7 @@
 (ns finbuddy.pages.login
   (:require
    [goog.dom :as gdom]
+   [goog.dom.classlist :as gclass]
    [goog.dom.forms :as gform]
    [validator :as v]
    [finbuddy.db :as db]
@@ -53,6 +54,15 @@
      (gform/getValueByName form "password")
      (boolean (gform/getValueByName form "remember")))))
 
+(defn button-provider-handler
+  [event]
+  (.preventDefault event)
+  (let [elem (gdom/getElement (.-currentTarget event))]
+    (cond
+      (gclass/contains elem "is-google") (users/provider-login (users/get-google-provider))
+      (gclass/contains elem "is-facebook") (users/provider-login (users/get-facebook-provider))
+      (gclass/contains elem "is-microsoft") (users/provider-login (users/get-google-provider)))))
+
 (defn show
   []
   [simple
@@ -60,30 +70,26 @@
     [:h1.title.has-text-dark.has-text-centered "Login"]
     [:div.is-divider]
     [:a.button.is-fullwidth.is-google
+     {:on-click button-provider-handler}
      [:span.icon [:i.fab.fa-google]]
      [:span "Google"]]
     [:br]
     [:a.button.is-fullwidth.is-facebook
+     {:on-click button-provider-handler}
      [:span.icon [:i.fab.fa-facebook]]
      [:span "Facebook"]]
-    [:br]
-    [:a.button.is-fullwidth.is-microsoft
-     [:span.icon [:i.fab.fa-microsoft]]
-     [:span "Microsoft"]]
     [:div.is-divider {:data-content "OR"}]
     (when-not (empty? @notify/notifications)
       (let [note (->> @notify/notifications
                       (notify/get-by-source :login)
                       (last)
                       (notify/mark-flash!))]
-        (js/console.log note)
         [notification (:id note) (:message note) (:severity note)]))
     [:form#login
      {:action "#"}
      (let [{value :value
             error :error} (db/get-form-field :email)]
        [input-field {:label "Email"
-                     :value value
                      :error error
                      :input-options {:id "email"
                                      :required "required"
@@ -99,7 +105,6 @@
      (let [{value :value
             error :error} (db/get-form-field :password)]
        [input-field {:label "Password"
-                     :value value
                      :error error
                      :input-options {:id "password"
                                      :required "required"

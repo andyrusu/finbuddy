@@ -2,7 +2,8 @@
   (:require 
    [firebase :as fb]
    [reagent.core :as r]
-   [finbuddy.pages.login :as login :refer [show]]
+   [finbuddy.pages.login :as login]
+   [finbuddy.pages.forgot :as forgot]
    [finbuddy.components.app :as appc]
    [finbuddy.components.auth :as authc]
    [finbuddy.router :as router :refer [router init-auth-observer top-name-from-route]]
@@ -35,7 +36,7 @@
        :app [:> appc/main]
        :login [login/show]
        :signup [authc/signup]
-       :forgot [authc/forgot]))))
+       :forgot [forgot/show]))))
 
 (defn start []
   (js/console.log "Starting app...")

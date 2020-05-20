@@ -1,12 +1,9 @@
 (ns finbuddy.notification
   (:require
    [reagent.core :as r]
-   [nano-id.core :refer [nano-id]])
-  (:import goog.structs.PriorityQueue))
+   [nano-id.core :refer [nano-id]]))
 
 (def notifications (r/atom []))
-
-(add-watch notifications :note #(js/console.log %))
 
 (def priority-map {:primary 4
                    :link 6

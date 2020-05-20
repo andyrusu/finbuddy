@@ -15,6 +15,14 @@
                                        :session "SESSION"
                                        "NONE")))
 
+(defn get-google-provider
+  []
+  (new (aget fb/auth "GoogleAuthProvider")))
+
+(defn get-facebook-provider
+  []
+  (new (aget fb/auth "FacebookAuthProvider")))
+
 (defn get-current-user
   []
   (.-currentUser (get-auth)))
@@ -22,6 +30,14 @@
 (defn observe-state-changed
   [observer]
   (.onAuthStateChanged (get-auth) observer))
+
+(defn provider-login
+  [provider]
+  (js/console.log provider)
+  (-> (get-auth)
+      (.signInWithPopup provider)
+      (.then #(js/console.log "login ok"))
+      (.catch #(js/console.log %))))
 
 (defn login
   [email password]

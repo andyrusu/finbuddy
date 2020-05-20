@@ -125,23 +125,3 @@
     [:div.is-divider {:data-content "OR"}]
     [login-link]]])
 
-(defn forgot
-  []
-  [layout
-   [:div.box
-    [:h1.title.has-text-dark.has-text-centered "Forgot password"]
-    [:hr]
-    (when-not (empty? (notify/get-by-type :forgot))
-      (let [note (last (:notifications @db/content))]
-        [notification (:id note) (:message note) (:class note)]))
-    [:form
-     {:action ""}
-     [field "Email" "email" "email" "e.g. bobsmith@gmail.com" :email]
-     [:div.field
-      [:button.button.is-success
-       {:on-click forgot-handler}
-       "Send Email"]]]
-    [:hr]
-    [signup-link]
-    " | "
-    [login-link]]])
