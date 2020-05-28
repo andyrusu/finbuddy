@@ -3,23 +3,24 @@
             [react :as react]
             [goog.dom :as gd]
             [react-router5 :refer [Link]]
-            [finbuddy.users :refer [logout]]))
+            [finbuddy.users :refer [logout]]
+            [finbuddy.notification :refer [delete!]]))
 
 (defn notification
-  ([id message] (notification id message :primary))
-  ([id message severity]
-   (let [class (case severity
-                 :primary "is-primary"
-                 :link "is-link"
-                 :info "is-info"
-                 :success "is-success"
-                 :warning "is-warning"
-                 :danger "is-danger")]
-     [:div
-      {:key id
-       :class (str "notification " class)}
-      [:button {:class "delete"} nil]
-      message])))
+  [{:keys [id severity message]}]
+  (when id
+    (let [class (case severity
+                  :primary "is-primary"
+                  :link "is-link"
+                  :info "is-info"
+                  :success "is-success"
+                  :warning "is-warning"
+                  :danger "is-danger")]
+      [:div
+       {:key id
+        :class (str "notification " class)}
+       [:button {:class "delete" :on-click #(delete! id)}]
+       message])))
 
 (defn link
   [options label]

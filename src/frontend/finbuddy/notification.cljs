@@ -1,9 +1,8 @@
 (ns finbuddy.notification
   (:require
+   [finbuddy.db :as db]
    [reagent.core :as r]
    [nano-id.core :refer [nano-id]]))
-
-(def notifications (r/atom []))
 
 (def priority-map {:primary 4
                    :link 6
@@ -17,36 +16,32 @@
   [_]
   [])
 
-(defn mark-flash-batch!
-  [notifications-to-mark]
-  (let [ids (set (map #(:id %) notifications-to-mark))]
-    (swap! notifications 
-           (fn [notifications ids]
-             (vec
-              (for [notification notifications
-                    :let [truify (constantly true)]]
-                (if (and (= nil (ids (:id notification))) 
-                         (= :flash (:type notification)))
-                  notification
-                  (update notification :seen? truify)))))
-           ids)))
-
-(defn mark-flash!
-  [notification]
-  (mark-flash-batch! [notification])
-  notification)
-
-(defn get-by-source
+(defn filter-by-source
   [source notifications]
   (filter #(= (:source %) source) notifications))
 
+(defn remove-by-id
+  [id notifications]
+  (remove #(= id (:id %) notifications)))
+
+(defn remove-by-source
+  [source notifications]
+  (remove #(= source (:source %)) notifications))
+
 (defn add!
   [notification]
-  (swap! notifications conj notification))
+  (let [new-notifications (conj (:notifications @db/content) notification)]
+    (swap! db/content #(assoc % :notifications new-notifications))))
 
 (defn delete!
   [id]
-  (reset! notifications (remove #(= id (:id %)) @notifications)))
+  (swap! db/content (fn [{:keys [notifications] :as content}]
+                      (assoc content :notifications (remove-by-id id notifications)))))
+
+(defn delete-by-source!
+  [source]
+  (swap! db/content (fn [{:keys [notifications] :as content}]
+                      (assoc content :notifications (remove-by-source source notifications)))))
 
 (defn create
   "Create a new notification and save it in the atom."
@@ -61,6 +56,18 @@
     :type type
     :severity severity
     :seen? false}))
+
+(defn get-all
+  []
+  (:notifications db/content))
+
+(defn get-by-source
+  [source]
+  (filter-by-source source (get-all)))
+
+(defn has-by-source?
+  [source]
+  (boolean (seq (filter-by-source source (get-all)))))
 
 (defn as-primary
   ([message] (create message :app :flash :primary (nano-id)))

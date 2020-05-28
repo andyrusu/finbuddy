@@ -79,12 +79,7 @@
      [:span.icon [:i.fab.fa-facebook]]
      [:span "Facebook"]]
     [:div.is-divider {:data-content "OR"}]
-    (when-not (empty? @notify/notifications)
-      (let [note (->> @notify/notifications
-                      (notify/get-by-source :login)
-                      (last)
-                      (notify/mark-flash!))]
-        [notification (:id note) (:message note) (:severity note)]))
+    [notification (last (notify/filter-by-source :login (:notifications @db/content)))]
     [:form#login
      {:action "#"}
      (let [{value :value

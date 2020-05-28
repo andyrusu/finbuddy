@@ -17,6 +17,10 @@
   []
   (swap! content #(assoc % :form nil)))
 
+(defn clear-notifications!
+  []
+  (swap! content #(assoc % :notifications [])))
+
 (defn get-form-field
   ([field] (get-form-field field nil))
   ([field default]

@@ -27,12 +27,7 @@
    [:div.box
     [:h1.title.has-text-dark.has-text-centered "Forgot password"]
     [:hr]
-    (when-not (empty? @notify/notifications)
-      (let [note (->> @notify/notifications
-                      (notify/get-by-source :forgot)
-                      (last)
-                      (notify/mark-flash!))]
-        [notification (:id note) (:message note) (:severity note)]))
+    [notification (last (notify/filter-by-source :forgot (:notifications @db/content)))]
     [:form
      {:id "forgot"
       :action "#"}

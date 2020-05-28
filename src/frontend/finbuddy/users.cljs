@@ -37,7 +37,7 @@
   (-> (get-auth)
       (.signInWithPopup provider)
       (.then #(js/console.log "login ok"))
-      (.catch #(js/console.log %))))
+      (.catch #(notify/add! (notify/as-danger (.-message %) :login)))))
 
 (defn login
   [email password]

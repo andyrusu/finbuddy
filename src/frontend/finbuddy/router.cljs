@@ -1,6 +1,7 @@
 (ns finbuddy.router
   (:require [finbuddy.db :as db]
             [finbuddy.users :as users :refer [get-current-user]]
+            [finbuddy.notification :refer [delete-by-source!]]
             [router5 :as r5]
             [router5-plugin-browser :as r5-browser]))
 
@@ -35,11 +36,20 @@
       (db/clear-form!))
     (done)))
 
+(defn clear-notifications-middleware
+  [router]
+  (fn [to-state from-state done]
+    (cond
+      (nil? from-state) (db/clear-notifications!)
+      (not (.areStatesEqual router from-state to-state)) (delete-by-source! (keyword (.-name from-state))))
+    (done)))
+
 (defn create
   [routes]
   (let [router (r5/createRouter (clj->js routes) #js {:defaultRoute :app})]
     (.usePlugin router (r5-browser))
     (.useMiddleware router clear-form-middleware)
+    (.useMiddleware router clear-notifications-middleware)
     router))
 
 (def router (create routes))
