@@ -110,6 +110,7 @@ dist
 public/js/cljs-runtime
 public/js/main.js
 public/js/manifest.edn
+public/js/test
 #target/electron/*
 #target/mobile/*
 .shadow-cljs
