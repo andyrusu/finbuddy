@@ -1,11 +1,8 @@
 (ns finbuddy.components.auth
   (:require
-   [goog.dom.dataset :as gdata]
    [goog.dom.forms :as gform]
    [finbuddy.db :as db]
-   [finbuddy.auth :refer [forgot-handler]]
-   [finbuddy.components.app :refer [link notification]]
-   [finbuddy.notification :as notify :refer [get-by-type]]))
+   [finbuddy.components.app :refer [link]]))
 
 (defn login-link
   []
@@ -72,56 +69,5 @@
                          (not (boolean (get-in @db/content [:form key :value]))))}]
     label]])
 
-(defn signup
-  []
-  [layout
-   [:div.box
-    [:h1.title.has-text-dark.has-text-centered "Signup"]
-    [:div.is-divider]
-    [:a.button.is-fullwidth.is-google
-     [:span.icon [:i.fab.fa-google]]
-     [:span "Google"]]
-    [:br]
-    [:a.button.is-fullwidth.is-facebook
-     [:span.icon [:i.fab.fa-facebook]]
-     [:span "Facebook"]]
-    [:br]
-    [:a.button.is-fullwidth.is-microsoft
-     [:span.icon [:i.fab.fa-microsoft]]
-     [:span "Microsoft"]]
-    [:div.is-divider {:data-content "OR"}]
-    [:form#signup
-     {:action ""}
-     [:div.field
-      [:label.label {:for "email"} "Email"]
-      [:div.control.has-icons-left
-       [:input.input
-        {:required "required"
-         :name "email"
-         :placeholder "e.g. bobsmith@gmail.com"
-         :type "email"}]
-       [:span.icon.is-small.is-left [:i.fa.fa-envelope]]]]
-     [:div.field
-      [:label.label {:for "password"} "Password"]
-      [:div.control.has-icons-left
-       [:input.input
-        {:required "required"
-         :name "password"
-         :placeholder "*******"
-         :type "password"}]
-       [:span.icon.is-small.is-left [:i.fa.fa-lock]]]]
-     [:div.field
-      [:label.label {:for "password-repeated"} "Repeat Password"]
-      [:div.control.has-icons-left
-       [:input.input
-        {:required "required"
-         :name "password-repeated"
-         :placeholder "*******"
-         :type "password"}]
-       [:span.icon.is-small.is-left [:i.fa.fa-lock]]]]
-     [:div.field
-      [:button.button.is-success
-       "Register"]]]
-    [:div.is-divider {:data-content "OR"}]
-    [login-link]]])
+
 
