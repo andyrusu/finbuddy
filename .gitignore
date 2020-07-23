@@ -111,6 +111,8 @@ public/js/cljs-runtime
 public/js/main.js
 public/js/manifest.edn
 public/js/test
+public-test/js/cljs-runtime
+public-test/js
 #target/electron/*
 #target/mobile/*
 .shadow-cljs
