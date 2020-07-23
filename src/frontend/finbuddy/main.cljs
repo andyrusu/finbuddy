@@ -2,6 +2,7 @@
   (:require 
    [firebase :as fb]
    [reagent.core :as r]
+   [reagent.dom :as rd]
    [react-router5 :as rr5]
    [finbuddy.pages.login :as login]
    [finbuddy.pages.forgot :as forgot]
@@ -43,7 +44,7 @@
   (fb/analytics)
   (js/console.log (users/get-current-user))
   (router/init-auth-observer)
-  (.start router/router #(r/render [:> rr5/RouterProvider
+  (.start router/router #(rd/render [:> rr5/RouterProvider
                              {:router router/router}
                              [:> app]]
                             (.getElementById js/document "app"))))
