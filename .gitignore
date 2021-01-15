@@ -116,3 +116,6 @@ public-test/js
 #target/electron/*
 #target/mobile/*
 .shadow-cljs
+.calva
+.clj-kondo
+.lsp
