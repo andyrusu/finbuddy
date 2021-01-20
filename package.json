@@ -33,6 +33,7 @@
   "homepage": "https://github.com/andyrusu/finbuddy#readme",
   "devDependencies": {
     "cssnano": "^4.1.10",
-    "del": "^5.1.0"
+    "del": "^5.1.0",
+    "shadow-cljs": "^2.11.14"
   }
 }

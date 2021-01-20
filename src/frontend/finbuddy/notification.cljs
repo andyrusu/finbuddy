@@ -1,20 +1,14 @@
 (ns finbuddy.notification
   (:require
    [finbuddy.db :as db]
-   [reagent.core :as r]
    [nano-id.core :refer [nano-id]]))
 
-(def priority-map {:primary 4
-                   :link 6
-                   :info 5
-                   :success 3
-                   :warning 2
-                   :danger 1})
-
-(defn get-by-type
-  "TO BE REMOVED!"
-  [_]
-  [])
+;; (def priority-map {:primary 4
+;;                    :link 6
+;;                    :info 5
+;;                    :success 3
+;;                    :warning 2
+;;                    :danger 1})
 
 (defn filter-by-source
   [source notifications]

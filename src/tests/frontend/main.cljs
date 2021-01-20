@@ -13,8 +13,11 @@
 
 (defn stop
   [done]
-  (done))
+  (js/console.log "done f:" done)
+  (done)) 
 
 (defn ^:export init
   []
   (start))
+
+(init)

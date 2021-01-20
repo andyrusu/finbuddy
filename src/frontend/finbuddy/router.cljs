@@ -70,7 +70,7 @@
   ([route]
    (goto route #js {} #js {} nil))
   ([route params]
-   (goto route #js {} #js {} nil))
+   (goto route params #js {} nil))
   ([route params options]
    (goto route params options nil))
   ([route params options done]

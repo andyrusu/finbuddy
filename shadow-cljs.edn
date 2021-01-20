@@ -31,4 +31,6 @@
                   :test-dir "public-test"
                   :runner-ns frontend.main
                   :devtools {:http-port 8021
-                             :http-root "public-test"}}}}
+                             :http-root "public-test"
+                             :before-load frontend.main/stop
+                             :after-load frontend.main/start}}}}

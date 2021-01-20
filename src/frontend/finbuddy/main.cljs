@@ -12,6 +12,7 @@
    [finbuddy.users :as users]
    [finbuddy.db :as db]))
 
+;; Do we need this?
 (defonce fb-app (fb/initializeApp #js {:apiKey "AIzaSyBRVEXRmxn8ubyLjPTK_2f3nAXnT-lVww4"
                                        :authDomain "finbuddy-3f573.firebaseapp.com"
                                        :databaseURL "https://finbuddy-3f573.firebaseio.com"
@@ -25,9 +26,6 @@
                              (js/console.log 
                               (clj->js old-state) 
                               (clj->js new-state))))
-
-(defn stop []
-  (js/console.log "Stopping..."))
 
 (defn app
   []
