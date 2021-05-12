@@ -6,11 +6,13 @@
    [validator :as v]
    [finbuddy.db :as db]
    [finbuddy.users :as users]
+   [finbuddy.react-hooks :as hooks]
    [finbuddy.notification :as notify]
    [finbuddy.components.form :refer [input-field check-field]]
    [finbuddy.components.app :refer [notification]]
    [finbuddy.components.auth :refer [signup-link forgot-link]]
-   [finbuddy.components.layouts :refer [simple]]))
+   [finbuddy.components.layouts :refer [simple]])
+  (:require-macros [finbuddy.react-hooks]))
 
 (defn validate
   [email password]
@@ -65,61 +67,63 @@
 
 (defn show
   []
-  [simple
-   [:div.box
-    [:h1.title.has-text-dark.has-text-centered "Login"]
-    [:div.is-divider]
-    [:a.button.is-fullwidth.is-google
-     {:on-click button-provider-handler}
-     [:span.icon [:i.fab.fa-google]]
-     [:span "Google"]]
-    [:br]
-    [:a.button.is-fullwidth.is-facebook
-     {:on-click button-provider-handler}
-     [:span.icon [:i.fab.fa-facebook]]
-     [:span "Facebook"]]
-    [:div.is-divider {:data-content "OR"}]
-    [notification (last (notify/filter-by-source :login (:notifications @db/content)))]
-    [:form#login
-     {:action "#"}
-     (let [{value :value
-            error :error} (db/get-form-field :email)]
-       [input-field {:label "Email"
-                     :error error
-                     :input-options {:id "email"
-                                     :required "required"
-                                     :class (cond
-                                              (and value error) "input is-danger"
-                                              (and value (= false error)) "input is-success"
-                                              :else "input")
-                                     :name "email"
-                                     :placeholder "e.g. bobsmith@gmail.com"
-                                     :type "email"
-                                     :value value
-                                     :on-change #(db/update-form-field! :email (gform/getValue (.-currentTarget %)))}}])
-     (let [{value :value
-            error :error} (db/get-form-field :password)]
-       [input-field {:label "Password"
-                     :error error
-                     :input-options {:id "password"
-                                     :required "required"
-                                     :class (cond
-                                              (and value error) "input is-danger"
-                                              (and value (= false error)) "input is-success"
-                                              :else "input")
-                                     :name "password"
-                                     :placeholder "**********"
-                                     :type "password"
-                                     :value value
-                                     :on-change #(db/update-form-field! :password (gform/getValue (.-currentTarget %)))}}])
-     [check-field {:label "Remember me"
-                   :key :remember
-                   :name "remember"}]
-     [:div.field
-      [:button.button.is-success
-       {:on-click submit-handler}
-       "Login"]]]
-    [:div.is-divider {:data-content "OR"}]
-    [signup-link]
-    " | "
-    [forgot-link]]])
+  (hooks/use-effect
+   (hooks/title "Login | finbuddy")
+   [simple
+    [:div.box
+     [:h1.title.has-text-dark.has-text-centered "Login"]
+     [:div.is-divider]
+     [:a.button.is-fullwidth.is-google
+      {:on-click button-provider-handler}
+      [:span.icon [:i.fab.fa-google]]
+      [:span "Google"]]
+     [:br]
+     [:a.button.is-fullwidth.is-facebook
+      {:on-click button-provider-handler}
+      [:span.icon [:i.fab.fa-facebook]]
+      [:span "Facebook"]]
+     [:div.is-divider {:data-content "OR"}]
+     [notification (last (notify/filter-by-source :login (:notifications @db/content)))]
+     [:form#login
+      {:action "#"}
+      (let [{value :value
+             error :error} (db/get-form-field :email)]
+        [input-field {:label "Email"
+                      :error error
+                      :input-options {:id "email"
+                                      :required "required"
+                                      :class (cond
+                                               (and value error) "input is-danger"
+                                               (and value (= false error)) "input is-success"
+                                               :else "input")
+                                      :name "email"
+                                      :placeholder "e.g. bobsmith@gmail.com"
+                                      :type "email"
+                                      :value value
+                                      :on-change #(db/update-form-field! :email (gform/getValue (.-currentTarget %)))}}])
+      (let [{value :value
+             error :error} (db/get-form-field :password)]
+        [input-field {:label "Password"
+                      :error error
+                      :input-options {:id "password"
+                                      :required "required"
+                                      :class (cond
+                                               (and value error) "input is-danger"
+                                               (and value (= false error)) "input is-success"
+                                               :else "input")
+                                      :name "password"
+                                      :placeholder "**********"
+                                      :type "password"
+                                      :value value
+                                      :on-change #(db/update-form-field! :password (gform/getValue (.-currentTarget %)))}}])
+      [check-field {:label "Remember me"
+                    :key :remember
+                    :name "remember"}]
+      [:div.field
+       [:button.button.is-success
+        {:on-click submit-handler}
+        "Login"]]]
+     [:div.is-divider {:data-content "OR"}]
+     [signup-link]
+     " | "
+     [forgot-link]]]))

@@ -16,15 +16,6 @@
   []
   [link {:routeName :forgot} "Forgot password"])
 
-(defn layout
-  [page]
-  [:section.hero.is-primary.is-fullheight
-   [:div.hero-body
-    [:div.container
-     [:div.columns.is-centered
-      [:div.column.is-5-tablet.is-5-desktop.is-5-widescreen
-       page]]]]])
-
 (defn field
   [label name type placeholder key]
   (let [value (get-in @db/content [:form key :value] nil)

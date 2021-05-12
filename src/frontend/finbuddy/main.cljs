@@ -7,6 +7,7 @@
    [finbuddy.pages.login :as login]
    [finbuddy.pages.forgot :as forgot]
    [finbuddy.pages.signup :as signup]
+   [finbuddy.pages.transactions :as trans]
    [finbuddy.components.app :as appc]
    [finbuddy.router :as router]
    [finbuddy.users :as users]
@@ -23,17 +24,19 @@
                                        :measurementId "G-CTGVJ5X1SB"}))
 
 (add-watch db/content :log (fn [_key _atom old-state new-state]
-                             (js/console.log 
-                              (clj->js old-state) 
-                              (clj->js new-state))))
+                             (js/console.group "State switch:")
+                             (js/console.log
+                              (clj->js old-state)
+                              (clj->js new-state))
+                             (js/console.groupEnd)))
 
 (defn app
   []
   (let [route (.-route (rr5/useRouteNode ""))]
     (r/as-element 
      (case (router/top-name-from-route route)
-       :app [:> appc/main]
-       :login [login/show]
+       :app [trans/show]
+       :login [:f> login/show]
        :signup [signup/show]
        :forgot [forgot/show]))))
 
@@ -42,10 +45,11 @@
   (fb/analytics)
   (js/console.log (users/get-current-user))
   (router/init-auth-observer)
-  (.start router/router #(rd/render [:> rr5/RouterProvider
-                             {:router router/router}
-                             [:> app]]
-                            (.getElementById js/document "app"))))
+  (.start router/router #(rd/render
+                          [:> rr5/RouterProvider
+                           {:router router/router}
+                           [:> app]]
+                          (.getElementById js/document "app")))) 
 
 (defn ^:export init []
   (start))
